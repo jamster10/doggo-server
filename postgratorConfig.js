@@ -5,8 +5,8 @@ module.exports = {
   'migrationDirectory': 'migrations',
   'driver': 'pg',
   'host': process.env.HOST,
-  'port': process.env.PORT,
-  'database': process.env.DATABASE,
+  'port': process.env.DB_PORT,
+  'database': process.env.MIGRATION_DATABASE,
   'username': process.env.USER,
   'password': process.env.PASSWORD
 };

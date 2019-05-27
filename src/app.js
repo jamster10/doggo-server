@@ -10,19 +10,16 @@ const { cors_Settings } = require('./util/CORS_settings');
 const { morgan_Settings } = require('./util/Logging-Winston_Morgan');
 
 const authenticationRouter = require('../src/Routes/authentication/auth-router');
-const usersRouter = require('../src/Routes/authentication/user-router');
+const usersRouter = require('../src/Routes/users/users-router');
 
 // const  validateToken  = require('./util/validateToken');
 
+app.use(morgan(morgan_Settings));
 app.use(cors(cors_Settings));
 app.use(helmet());
-app.use(validateToken);
-app.use(morgan(morgan_Settings));
 
 app.use('/api/auth', authenticationRouter);
-app.use('/users', usersRouter);
-
-
+app.use('/api/users', usersRouter);
 
 
 
