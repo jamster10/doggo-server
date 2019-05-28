@@ -48,6 +48,29 @@ describe('Authentication Endpoint', ()=> {
         .send({user_name: 'jhendrix', password: 'password'})
         .expect(401, {message: 'invalid username or password'});
     });
+    
+    it('resolves a bad password entry', () => {
+      return request(app)
+        .post('/api/auth/login')
+        .send({user_name: 'jamster1', password: 'password1'})
+        .expect(401, {message: 'invalid username or password'});
+    });
+  });
+
+  context('Good credentials', () => {
+    it('locates a user with the right username but wrong password', () => {
+      return request(app)
+        .post('/api/auth/login')
+        .send({user_name: 'jamster1', password: 'password1'})
+        .expect(401, {message: 'invalid username or password'});
+    });
+
+    it('locates a user with the right username and right password', () => {
+      return request(app)
+        .post('/api/auth/login')
+        .send({user_name: 'jamster1', password: 'password'})
+        .expect(200);
+    });
   });
   
   

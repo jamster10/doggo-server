@@ -1,5 +1,6 @@
 'use strict';
 const bcrypt = require('bcrypt');
+const xss = require('xss');
 
 const table = 'users';
 module.exports = {
@@ -25,6 +26,14 @@ module.exports = {
   },
   hashPassword(password) {
     return bcrypt.hash(password, 12);
+  },
+  scrubUser(user){
+    const newUser = {
+      user_name: xss(user.user_name),
+      nickname: xss(user.nickname)
+    };
+    if (!user.nickname) delete newUser.nickname;
+    return newUser;
   }
 
 };  

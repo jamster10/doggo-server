@@ -21,10 +21,8 @@ usersRouter
       const checkNickname = validate.checkNickname(nickname);
       if (checkNickname) return res.status(401).json(checkNickname);
     }
-
     UsersService.checkIfUserExists(req.app.get('db'), user_name)
       .then(existingUser => {
-       console.log(existingUser);
         if(existingUser) return res.status(400).json({message: 'username already exists'});
 
         UsersService.hashPassword(password)
@@ -34,10 +32,12 @@ usersRouter
               password: hashedPassword,
               nickname
             };
+            if (!nickname) delete newUser.nickname;
             UsersService.createUser(req.app.get('db'), newUser)
-              .then(user => res.status(201).json(user) );
+              .then(user => res.status(201).json(UsersService.scrubUser(user)) );
           });
-      });
+      })
+      .catch(next);
   });
 
 module.exports = usersRouter;

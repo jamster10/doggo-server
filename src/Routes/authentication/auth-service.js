@@ -11,6 +11,9 @@ const AuthService = {
       .where({user_name})
       .first();
   },
+  confirmPassword(password, DB_password){
+    return bcrypt.compare(password, DB_password);
+  }
 };
 
 module.exports = AuthService;

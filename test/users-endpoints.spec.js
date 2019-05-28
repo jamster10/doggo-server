@@ -74,13 +74,29 @@ describe('Users endpoints working', () => {
         .expect(400, {message: 'username already exists'});
     });
 
-    it('resolves a new user being created', () => {
+    it('resolves a new user being created with nickname', () => {
       return request(app)
         .post('/api/users/register')
         .send({user_name: 'userperson', password: 'password', nickname: 'SDdd'})
         .expect(201)
         .then(newUser => {
-          expect(newUser.body).to.eql({id: 2, user_name: 'userperson', password: '$2b$12$cT778Pi0mIF/gMjfy86vl.a83EWQ3XON.ooV6Sm75s.q0tSwS/4u2', nickname: 'SDdd'});
+          expect(newUser.body.user_name).to.eql('userperson');
+          expect(newUser.body.nickname).to.eql('SDdd');
+          expect(newUser.body).to.not.have.property('password');
+          expect(newUser.body).to.not.have.property('id');
+        });
+    });
+
+    it('resolves a new user being created without nickname', () => {
+      return request(app)
+        .post('/api/users/register')
+        .send({user_name: 'userperson2', password: 'password'})
+        .expect(201)
+        .then(newUser => {
+          expect(newUser.body.user_name).to.eql('userperson2');
+          expect(newUser.body).to.not.have.property('nickname');
+          expect(newUser.body).to.not.have.property('password');
+          expect(newUser.body).to.not.have.property('id');
         });
     });
   });

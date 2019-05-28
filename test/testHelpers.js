@@ -7,19 +7,19 @@ const users = [
   {
     id: 1,
     user_name: 'jamster1',
-    password: '$2a$05$YNkN2RlVsokFI6qdb1Wt7ObvNKZS01DHzR9ltVJYI7D9YPN10Cqoq',//password
+    password: '$2b$12$QvZYY1OCZ1l7ndOjlOfnduTdRgIXy7STz.Qjw7tqLEGm.sfi2S3R2',//password
     nickname: 'Kristof'
   }, 
   {
     id: 2,
     user_name: 'test-user',
-    password: '$2a$05$brcqGxsCLeh3ic1XWO88oOMHYrai/ex45zAuvoJK36GTbrWIX9RGW',//guacamole2@
+    password: '$2b$12$Mf0Blfs/b4aSpGrcQuVAFuF3XB4EfbCpHqFo7LwUFoBo.LzmPLR52',//guacamole2@
     nickname: 'Kelsey'
   },
   {
     id: 3,
     user_name: 'cookiemonster',
-    password: '$2a$05$FiLswl4H27OYcl/m8uRm2eftYJ8vRNSFyzO89k53IgeN0/mkcR8jG',//alpharomero!@#~
+    password: '$2b$12$gZO4XwcsCOY76nSxCG715O866U8kphGNqOeaSZr9KWu8HqdzOojNm',//alpharomero!@#~
     nickname: 'Riff Raff'
   }
 ];
@@ -418,26 +418,47 @@ function clearTables(DB) {
 function seedUsers(DB) {
   return DB
     .insert(users)
-    .into('users');
+    .into('users')
+    .then(_ => 
+      DB.raw(
+        `SELECT setval('users_id_seq', ?)`,
+        users[users.length - 1].id
+      ));
 }
           
 function seedRoutes(DB) {
   return DB
     .insert(routes)
-    .into('routes');
+    .into('routes')
+    .then( () => 
+      DB.raw(
+        `SELECT setval('routes_id_seq', ?)`,
+        routes[routes.length - 1].id
+      ));
 }
           
 function seedPlaces(DB) {
   return DB
     .insert(places)
-    .into('places');
+    .into('places')
+    .then(_ => 
+      DB.raw(
+        `SELECT setval('places_id_seq', ?)`,
+        places[places.length - 1].id
+      ));
 }
           
 function seedNotes(DB) {
   return DB
     .insert(notes)
-    .into('notes');
-}
+    .into('notes')
+    .then(_ =>
+      DB.raw(
+        `SELECT setval('notes_id_seq', ?)`,
+        notes[notes.length - 1].id
+      ));
+} 
+
           
 function seedUsersPlaces(DB) {
   return DB
