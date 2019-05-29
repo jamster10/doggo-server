@@ -4,7 +4,7 @@
 const knex = require('knex');
 const helpers = require('./testHelpers');
 const app = require('../src/app');
-const bcrypt = require('bcrypt');
+
 
 describe('Users endpoints working', () => {
   let db;

@@ -1,10 +1,12 @@
 'use strict';
-/*global request*/
+/*global request, expect*/
 const app = require ('../src/app');
 const helpers = require('./testHelpers');
 const knex = require('knex');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
-describe('Authentication Endpoint', ()=> {
+describe('Authentication Endpoints', ()=> {
   let db;
   
   before('Set up the DB', () => {
@@ -21,6 +23,10 @@ describe('Authentication Endpoint', ()=> {
 
   before('add users to table', () => {
     return helpers.seedUsers(db);
+  });
+
+  after('Clear the tables', ()=> {
+    return helpers.clearTables(db);
   });
 
   after('Destroy connection to DB', () => {
@@ -71,8 +77,46 @@ describe('Authentication Endpoint', ()=> {
         .send({user_name: 'jamster1', password: 'password'})
         .expect(200);
     });
+
+    it('Sends a JWT Token to the authorized client', () => {
+      
+      const expectedToken = jwt.sign({'user_id': 1,}, process.env.JWT_SECRET, {
+        subject: 'jamster1',
+        algorithm: 'HS256',
+        expiresIn: process.env.JWT_EXPIRATION
+      });
+
+      const expiredToken = jwt.sign({'user_id': 1,}, process.env.JWT_SECRET, {
+        subject: 'jamster1',
+        algorithm: 'HS256',
+        expiresIn: '-1s'
+      });
+
+      return request(app)
+        .post('/api/auth/login')
+        .send({user_name: 'jamster1', password: 'password'})
+        .expect(200)
+        .then( res => {
+          expect(res.body).to.have.property('token');
+        });
+
+    });
+
+    it('handles no token', () => {
+      return request(app)
+        .post('/api/auth/refresh')
+        .set('token', 'bad')
+        .send({user_name: 'jamster1', password: 'password'})
+        .expect(401);
+    });
+
+    it('handles good token', () => {
+      return request(app)
+        .post('/api/auth/refresh')
+        .set('Authorization', 'bearer test')
+        .send({user_name: 'jamster1', password: 'password'})
+        .expect(200);
+    });  
   });
-  
-  
 });
 

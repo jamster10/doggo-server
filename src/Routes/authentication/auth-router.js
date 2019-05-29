@@ -2,7 +2,7 @@
 
 const express = require('express');
 const AuthService = require('./auth-service');
-//const { requireAuth } require
+const requireAuth = require('../../util/jwt_auth')
 
 const authRouter = express.Router();
 
@@ -24,13 +24,24 @@ authRouter
         AuthService.confirmPassword(password, user.password)
           .then(match => {
             if(!match) return res.status(401).json(invalid);
-            return res.status(200).end();
+            
+            //set up JWT
+            const subject = user.user_name;
+            const payload = { user_id: user.id };
+            res.status(200).send({ token: AuthService.createJwt(subject, payload) });
           });
 
-      });
+      })
+      .catch(next);
+  });
 
-    
+authRouter
+  .route('/refresh')
+  .post(requireAuth, (req, res, next) => {
+    const subject = req.user.user_name;
+    const payload = { user_id: req.user.id };
 
+    res.status(200).send(AuthService.createJwt(subject, payload));
   });
 
 module.exports = authRouter;
