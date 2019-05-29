@@ -1,7 +1,7 @@
 'use strict';
 const AuthService = require('../Routes/authentication/auth-service')
 function requireAuth(req, res, next) {
-  const token = req.get('Authorization') || '';
+  const token = req.get('authorization') || '';
   let bearerToken;
 
   if(!token.toLowerCase().startsWith('bearer ')) {

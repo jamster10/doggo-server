@@ -10,9 +10,9 @@ module.exports = {
     if (!validUserName.test(userName) || userName.includes('<script')) return problem('username');
   },
   checkPassword(password){
-    if (password == null || undefined){ console.log('aaaa'); return problem('password');}
-    if (password.trim().length < 8 || password.length > 60) { console.log('aaaa'); return problem('password');}
-    if (password.includes('<')|| password.includes('>')) return problem('password')
+    if (password == null || undefined) return problem('password');
+    if (password.trim().length < 8 || password.length > 60) return problem('password');
+    if (password.includes('<')|| password.includes('>')) return problem('password');
   },
   checkNickname(nickname){
     if (nickname && nickname.trim().length > 2){
