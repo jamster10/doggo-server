@@ -2,7 +2,7 @@
 
 const express = require('express');
 const AuthService = require('./auth-service');
-const requireAuth = require('../../util/jwt_auth')
+const requireAuth = require('../../util/jwt_auth');
 
 const authRouter = express.Router();
 

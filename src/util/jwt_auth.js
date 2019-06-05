@@ -1,5 +1,6 @@
 'use strict';
-const AuthService = require('../Routes/authentication/auth-service')
+const AuthService = require('../Routes/authentication/auth-service');
+
 function requireAuth(req, res, next) {
   const token = req.get('authorization') || '';
   let bearerToken;
