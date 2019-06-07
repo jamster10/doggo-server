@@ -45,7 +45,12 @@ placesRouter
     const currentUser = req.user.id;
     const placeId = req.params.placeId;
 
-    PlacesService.deletePlace(req.app.get('db'), {currentUser, placeId});
+    PlacesService.deletePlace(req.app.get('db'), {currentUser, placeId})
+      .then(_ => {
+        return res.status(204).end();
+      })
+      .catch(_ => res.status(500).json({message: 'There was a problem deleting the resource.'}));
+    
 
   });
 

@@ -8,7 +8,8 @@ const PlacesService = {
       .insert(newPlace)
       .into('places')
       .returning('*')
-      .then(newPlace => newPlace[0]);
+      .then(newPlace => newPlace[0])
+
   },
   attributeUser(db, savedInfo) { //not used atm
     return db
@@ -30,9 +31,13 @@ const PlacesService = {
       .select('*')
       .from('user_places')
       .where('user_id', userid)
+      
   },
   deletePlace(db, selection) {
-    return db('places');
+    return db('places')
+      .where('user_id', selection.currentUser)
+      .andWhere('place_id', selection.placeId)
+      .delete();
 
   },
   serializePlace(place) {
