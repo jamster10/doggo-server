@@ -1,12 +1,12 @@
 'use strict';
 
 const app = require('./app');
-const { PORT, TEST_DB_URL } = require('./config');
+const { PORT, DB_URL } = require('./config');
 const knex = require('knex');
 
 const knexInstance = knex({
   client: 'pg',
-  connection: TEST_DB_URL
+  connection: DB_URL
 });
 //WARNING CONNECTED TO TEST DB
 
