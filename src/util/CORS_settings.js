@@ -1,6 +1,6 @@
 'use strict';
 
-const whitelist = ['http://localhost:3000', 'http://my-project.com'];
+const whitelist = ['http://localhost:3000', 'https://dog-go.netlify.com'];
 
 module.exports = function origin(origin, callback) {
   if (whitelist.indexOf(origin) !== -1 || !origin) {
