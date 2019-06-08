@@ -13,10 +13,12 @@ placesRouter
       address, name, place_id, price_level, rating, user_ratings_total, saved
     };
 
-    Object.keys(savedPlace).forEach(key => {
-      if (!savedPlace[key]) return res.status(400).send({message: `Error saving place. Missing ${key}`});
-      
-    });
+    for (const [key, value] of Object.entries(savedPlace))
+      if (value == null)
+        return res.status(400).json({
+          message: `Missing '${key}' in request body`
+        });
+  
 
     const currentUser = req.user.id;
     savedPlace.user_id = currentUser;
