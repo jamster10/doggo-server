@@ -10,8 +10,8 @@ const { cors_Settings } = require('./util/CORS_settings');
 const { morgan_Settings } = require('./util/Logging-Winston_Morgan');
 
 const authenticationRouter = require('../src/Routes/authentication/auth-router');
-const usersRouter = require('../src/Routes/users/users-router');
-const placesRouter = require('../src/Routes/places/places-router');
+const usersRouter = require('../src/routes/users/users-router');
+const placesRouter = require('../src/routes/places/places-router');
 
 // const  validateToken  = require('./util/validateToken');
 
