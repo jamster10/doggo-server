@@ -11,7 +11,7 @@ const knexInstance = knex({
 //WARNING CONNECTED TO TEST DB
 
 app.set('db', knexInstance);
-app.listen(PORT, console.log('Welcome to the MaTriX-TESTx', PORT));
+app.listen(PORT, console.log('Welcome to the MaTriXheroku', PORT));
 
 
 
